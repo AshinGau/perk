@@ -1,7 +1,7 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
-import VueResource from 'vue-resource';
-import $ from "jquery";
+var Vue = require('./utils/vue.js'),
+	VueRouter = require('./utils/vue-router.js'),
+	VueResource = require('./utils/vue-resource.js'),
+	$ = require('./utils/jquery.js');
 
 Vue.use(VueRouter);
 Vue.use(VueResource);
@@ -15,7 +15,7 @@ router.map({
 	'/article': {
 		component: Article
 	}
-})
+});
 
 router.start(PerkApp, '#PerkApp');
 
@@ -27,5 +27,5 @@ $(window).scroll(function(){
 	}else{
 		$AppHeader.removeClass('nail');
 	}
-})
+});
 
