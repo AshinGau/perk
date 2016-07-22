@@ -12,6 +12,9 @@ import Article from './Article.vue';
 var router = new VueRouter();
 var PerkApp = Vue.extend(AppHeader);
 router.map({
+	'/': {
+		component: Article
+	},
 	'/article': {
 		component: Article
 	}
