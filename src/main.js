@@ -19,9 +19,9 @@ router.map({
 
 router.start(PerkApp, '#PerkApp');
 
-var $AppHeader = $('#AppHeader');
 $(window).scroll(function(){
 	var top = $(window).scrollTop();
+	var $AppHeader = $('#AppHeader');
 	if(top > 5){
 		$AppHeader.addClass('nail');
 	}else{
