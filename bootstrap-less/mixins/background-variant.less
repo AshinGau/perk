@@ -1,0 +1,9 @@
+// Contextual backgrounds
+
+.bg-variant(@color,@font-color:@text-color) {
+  background-color: @color;
+  color:@font-color;
+  a&:hover {
+    background-color: darken(@color, 10%);
+  }
+}

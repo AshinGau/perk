@@ -1,0 +1,90 @@
+﻿//由于取消了gutter，有些bootstrap的样式没有了
+@media (min-width:1px) {
+    .inherit-gutter, .inherit-gutter [class*="col-"], .gutter {
+        .box-sizing(border-box);
+        padding-left: @gutter-width/2 !important;
+        padding-right: @gutter-width/2 !important;
+    }
+}
+
+.box {
+    padding: 0px 15px;
+
+    span& {
+        display: inline-block;
+    }
+}
+
+.box-gray {
+    border: 1px solid @gray-lighter;
+}
+
+.box-stress {
+    border-left: 4px solid @brand-danger;
+}
+
+.row-clear {
+    clear: both;
+}
+
+.responsive-container {
+    overflow-y: hidden;
+    overflow-x: auto;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    -webkit-overflow-scrolling: touch;
+}
+
+pre, code {
+    .responsive-container;
+}
+
+.circle {
+    border-radius: @input-height-computed !important;
+
+    &.btn-nano {
+        border-radius: @input-height-computed - @btn-shadow-width !important;
+    }
+}
+
+.circle-lg {
+    border-radius: @input-height-large-computed !important;
+     &.btn-nano {
+        border-radius: @input-height-large-computed - @btn-shadow-width !important;
+    }
+}
+
+.circle-sm {
+    border-radius: @input-height-small-computed !important;
+     &.btn-nano {
+        border-radius: @input-height-small-computed - @btn-shadow-width !important;
+    }
+}
+
+.metro {
+    border-radius: 0px !important;
+}
+
+.radius {
+    border-radius: @border-radius-base !important;
+}
+
+.radius-lg {
+    border-radius: @border-radius-large !important;
+}
+
+.radius-sm {
+    border-radius: @border-radius-small !important;
+}
+.container-static{
+    width: 1000px;
+    margin: auto;
+}
+ul.menu{
+	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
+	>li{
+		margin: 0px;
+		padding: 0px;
+	}
+}

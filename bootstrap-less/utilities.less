@@ -1,0 +1,136 @@
+//
+// Utility classes
+// --------------------------------------------------
+
+
+// Floats
+// -------------------------
+
+.clearfix {
+  .clearfix();
+}
+.center-block {
+  .center-block();
+}
+.pull-right {
+  float: right !important;
+}
+.pull-left {
+  float: left !important;
+}
+
+
+// Toggling content
+// -------------------------
+
+// Note: Deprecated .hide in favor of .hidden or .sr-only (as appropriate) in v3.0.1
+.hide {
+  display: none !important;
+}
+.show {
+  display: block !important;
+}
+.invisible {
+  visibility: hidden;
+}
+.text-hide {
+  .text-hide();
+}
+
+// Hide from screenreaders and browsers
+//
+// Credit: HTML5 Boilerplate
+
+.hidden {
+  display: none !important;
+}
+
+
+// For Affix plugin
+// -------------------------
+
+.affix {
+  position: fixed;
+}
+
+.gutter{
+	padding-left: 20px;
+}
+
+.msg-info{
+	display: block;
+	float: right;
+}
+
+.gutter-left{
+	padding-left: 20px;
+}
+.gutter-right{
+	padding-right: 20px;
+}
+
+.interval{
+	margin-bottom: 20px;
+}
+
+@media (max-width: @screen-phone){
+	.msg-info{
+		float: none;
+	}
+	.gutter-left{
+		padding-left: 0px;
+	}
+	.gutter-right{
+		padding-right: 0px;
+	}
+}
+
+a.link-default{
+	color: @text-color;
+	&:visited{
+		color: @text-color;
+	}
+	&:hover{
+		color: @brand-primary-dark;
+		text-decoration: underline;
+	}
+	&:focus{
+		color: @brand-primary-dark;
+		text-decoration: underline;
+	}
+}
+
+a.link-white{
+	color: #FFF;
+	&:visited{
+		color: #FFF;
+	}
+	&:hover{
+		color: #FFF;
+		text-decoration: underline;
+	}
+	&:focus{
+		color: #FFF;
+		text-decoration: underline;
+	}
+}
+
+.text-indent{
+	text-indent: 2em;
+}
+
+a.link-stress{
+	color: #ff643c;
+	font-weight: bold;
+	&:visited{
+		color: #ff643c;
+	}
+	&:hover{
+		color: #ff643c;
+		text-decoration: none;
+	}
+	&:focus{
+		color: #ff643c;
+		text-decoration: none;
+	}
+}

@@ -1,0 +1,287 @@
+//table
+table {
+    border-collapse: collapse;
+}
+
+table.text-center {
+    th, td {
+        text-align: center;
+    }
+}
+
+caption {
+    font-size: 16px;
+    padding-top: @table-cell-padding;
+    padding-bottom: @table-cell-padding;
+    color: #000;
+    text-align: left;
+}
+
+tr {
+    &.text-center {
+        th, td {
+            text-align: center;
+        }
+    }
+
+    &.text-right {
+        th, td {
+            text-align: right;
+        }
+    }
+
+    &.text-left {
+        th, td {
+            text-align: left;
+        }
+    }
+}
+
+th, td {
+    text-align: left;
+    vertical-align: middle;
+}
+
+th, td {
+    &.text-center {
+        text-align: center !important;
+    }
+
+    &.text-right {
+        text-align: right !important;
+    }
+
+    &.text-left {
+        text-align: left !important;
+    }
+}
+
+.table-fit {
+    margin: auto;
+}
+
+.table-full {
+    width: 100%;
+}
+
+.table-block {
+    display: table;
+}
+
+.table-row {
+    display: table-row;
+}
+
+.table-cell {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle !important;
+
+    &.bottom {
+        vertical-align: bottom !important;
+    }
+
+    &.top {
+        vertical-align: top !important;
+    }
+
+    &.left {
+        text-align: left !important;
+    }
+
+    &.right {
+        text-align: right !important;
+    }
+}
+
+.table-td {
+    display: table-cell;
+}
+
+.table {
+    width: 100%;
+    max-width: 100%;
+    background: @table-bg;
+    font-size: @table-font-size;
+
+    &.middle {
+        > thead,
+        > tbody,
+        > tfoot {
+            > tr {
+                > th,
+                > td {
+                    vertical-align: middle;
+                }
+            }
+        }
+    }
+
+    &.bottom {
+        > thead,
+        > tbody,
+        > tfoot {
+            > tr {
+                > th,
+                > td {
+                    vertical-align: bottom;
+                }
+            }
+        }
+    }
+
+    > thead,
+    > tbody,
+    > tfoot {
+        > tr {
+            > th,
+            > td {
+                padding: @table-cell-padding;
+                line-height: @line-height-base;
+                vertical-align: top;
+                border-top: 1px solid @table-border-color;
+                background-color: @table-cell-bg;
+            }
+        }
+    }
+
+    > thead > tr > th {
+        vertical-align: bottom;
+        border-bottom: 1px solid @table-border-color;
+        font-weight: normal;
+        color: #000;
+    }
+
+    > tbody > tr:last-child td {
+        border-bottom: 1px solid @table-border-color;
+    }
+
+    > tbody + tbody {
+        border-top: 1px solid @table-border-color;
+    }
+}
+
+.table-condensed {
+    > thead,
+    > tbody,
+    > tfoot {
+        > tr {
+            > th,
+            > td {
+                padding: @table-condensed-cell-padding;
+            }
+        }
+    }
+}
+
+.table-bordered {
+    border: 1px solid @table-border-color;
+
+    > thead,
+    > tbody,
+    > tfoot {
+        > tr {
+            > th,
+            > td {
+                border: 1px solid @table-border-color;
+            }
+        }
+    }
+
+    > thead > tr {
+        > th,
+        > td {
+            border-bottom-width: 1px;
+        }
+    }
+}
+
+.table-striped {
+    > tbody > tr:nth-child(odd) {
+        > td,
+        > th {
+            background-color: @table-bg-striped;
+        }
+    }
+}
+
+.table-hover {
+    > tbody > tr:hover {
+        > td,
+        > th {
+            background-color: @table-bg-hover;
+        }
+    }
+}
+
+table {
+    td,
+    th {
+        &[class*="col-"] {
+            position: static;
+            float: none;
+            display: table-cell;
+        }
+    }
+}
+
+@media screen and (max-width: @screen-sm-min) {
+    .table-responsive {
+        width: 100%;
+        overflow-y: hidden;
+        overflow-x: auto;
+        -ms-overflow-style: -ms-autohiding-scrollbar;
+        -webkit-overflow-scrolling: touch;
+
+        > .table {
+            margin-bottom: 0;
+
+            > thead,
+            > tbody,
+            > tfoot {
+                > tr {
+                    > th,
+                    > td {
+                        white-space: nowrap;
+                    }
+                }
+            }
+        }
+
+        > .table-bordered {
+
+            > thead,
+            > tbody,
+            > tfoot {
+                > tr {
+                    > th:first-child,
+                    > td:first-child {
+                        border-left: 0;
+                    }
+
+                    > th:last-child,
+                    > td:last-child {
+                        border-right: 0;
+                    }
+                }
+            }
+
+            > tbody,
+            > tfoot {
+                > tr:last-child {
+                    > th,
+                    > td {
+                        border-bottom: 0;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Generate the contextual variants
+.table-row-variant(active; @table-bg-active);
+.table-row-variant(success; @state-success-bg);
+.table-row-variant(info; @state-info-bg);
+.table-row-variant(warning; @state-warning-bg);
+.table-row-variant(danger; @state-danger-bg);
