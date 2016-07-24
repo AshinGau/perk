@@ -6,11 +6,11 @@ var Vue = require('./utils/vue.js'),
 Vue.use(VueRouter);
 Vue.use(VueResource);
 
-import AppHeader from './AppHeader.vue';
+import Skeleton from './Skeleton.vue';
 import Article from './Article.vue';
 
 var router = new VueRouter();
-var PerkApp = Vue.extend(AppHeader);
+var PerkApp= Vue.extend(Skeleton);
 router.map({
 	'/': {
 		component: Article
@@ -21,14 +21,3 @@ router.map({
 });
 
 router.start(PerkApp, '#PerkApp');
-
-$(window).scroll(function(){
-	var top = $(window).scrollTop();
-	var $AppHeader = $('#AppHeader');
-	if(top > 5){
-		$AppHeader.addClass('nail');
-	}else{
-		$AppHeader.removeClass('nail');
-	}
-});
-
