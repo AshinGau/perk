@@ -1,0 +1,8 @@
+运行如下命令
+npm install -g webpack webpack-dev-server grunt-cli
+npm install
+grunt
+webpack -w
+webpack-dev-server
+访问
+localhost:8080/index.html
