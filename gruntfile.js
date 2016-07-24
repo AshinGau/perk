@@ -6,12 +6,12 @@
                     cleancss: true
                 },
                 files: {
-                    "public/css/perk.min.css": "less/perk.less"
+                    "public/css/perk.min.css": "bootstrap-less/__perk.less"
                 }
             }          
         },
         watch: {
-            files: ['less/*.less','less/mixins/*.less'],
+            files: ['bootstrap-less/*.less','bootstrap-less/mixins/*.less'],
             tasks: ['less'],
             options: {
                 spawn: false,

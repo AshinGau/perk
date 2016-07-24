@@ -1,25 +1,28 @@
 <template>
 	<div id="PerkApp">
 		<div id="PerkBody">
-			<router-view></router-view>
+			<router-view keep-alive></router-view>
 		</div>
 		<div id="PerkMenu">
 			<ul class="menu">
 				<li>
-					<a v-link="{ path: '/article' }">
-						<span class="icon icon-article"></span>
+					<a class="link-default" v-link="{ path: '/', exact: true }">
+						<span class="icon icon-article">&nbsp;</span>
+						<br/>
 						<span class="text">文章</span>
 					</a>
 				</li>
 				<li>
-					<a v-link="{ path: '/message' }">
-						<span class="icon icon-message"></span>
+					<a class="link-default" v-link="{ path: '/message', exact: true }">
+						<span class="icon icon-message">&nbsp;</span>
+						<br/>
 						<span class="text">消息</span>
 					</a>
 				</li>
 				<li>
-					<a v-link="{ path: '/user' }">
-						<span class="icon icon-user"></span>
+					<a class="link-default" v-link="{ path: '/user', exact: true }">
+						<span class="icon icon-user">&nbsp;</span>
+						<br/>
 						<span class="text">个人中心</span>
 					</a>
 				</li>

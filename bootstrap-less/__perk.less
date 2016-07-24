@@ -1,0 +1,141 @@
+// Core variables and mixins
+@import "variables.less";
+@import "mixins.less";
+
+// Reset and dependencies
+@import "normalize.less";
+@import "print.less";
+@import "icon.less";
+
+// Core CSS
+@import "scaffolding.less";
+@import "type.less";
+@import "code.less";
+@import "grid.less";
+@import "tables.less";
+@import "forms.less";
+@import "buttons.less";
+
+// Components w/ JavaScript
+@import "modals.less";
+
+// Components
+@import "panels.less";
+@import "close.less";
+
+// Utility classes
+@import "utilities.less";
+@import "responsive-utilities.less";
+
+//variables
+@gray-line-color: #ccc;
+
+ul.menu{
+	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
+	>li{
+		margin: 0px;
+		padding: 0px;
+	}
+}
+
+#PerkBody{
+	padding-bottom: 80px;
+}
+
+#PerkMenu{
+	border-top: 1px solid @gray-line-color;
+	background-color: #fff;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	>.menu{
+		padding: 0px 20px;
+		.clearfix;
+		>li{
+			float: left;
+			width: 33.33%;
+			>a{
+				display: block;
+				text-align: center;
+				font-size: 12px;
+				padding: 5px 0px;
+				.icon, .text{
+					display: inline-block;
+				}
+			}
+		}
+	}
+}
+
+#PerkMenu a{
+	&:hover{
+		.icon-article{
+			background-position: -66px 2px;
+		}
+
+		.icon-message{
+			background-position: -66px -49px;
+		}
+
+		.icon-user{
+			background-position: -64px -100px;
+		}
+	}
+	&.v-link-active{
+		.icon-article{
+			background-position: -66px 2px;
+		}
+
+		.icon-message{
+			background-position: -66px -49px;
+		}
+
+		.icon-user{
+			background-position: -64px -100px;
+		}
+		color: @brand-primary-dark;
+	}
+}
+
+.article-title{
+	font-weight: normal;
+	font-size: 24px;
+	line-height: 1.4;
+	color: #000;
+}
+.article-img{
+	margin: 10px 0px;
+	img{
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+}
+
+@article-introduction-util: 2px solid @gray-darker;
+.article-introduction{
+	padding: 20px 15px;
+	margin: 20px 0px;
+	position: relative;
+	.util-top, .util-bottom{
+		display: inline-block;
+		width: 50px;
+		height: 20px;
+		position: absolute;
+	}
+	.util-top{
+		left: 0;
+		top: 0;
+		border-top: @article-introduction-util;
+		border-left: @article-introduction-util;
+	}
+	.util-bottom{
+		right: 0;
+		bottom: 0;	
+		border-bottom: @article-introduction-util;
+		border-right: @article-introduction-util;
+	}
+}
