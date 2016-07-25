@@ -139,3 +139,23 @@ ul.menu{
 		border-right: @article-introduction-util;
 	}
 }
+
+@media (min-width: @screen-phone){
+	.article-introduction{
+		display: inline-block;
+	}
+	.article-img{
+		img{
+			display: inline-block;
+			width: auto;
+			height: auto;
+		}
+	}
+}
+
+@media (max-width: @screen-phone){
+	.perk-container{
+		width: 100%;
+		padding: 0px;
+	}
+}
