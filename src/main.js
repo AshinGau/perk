@@ -1,15 +1,13 @@
 var Vue = require('./utils/vue.js'),
 	VueRouter = require('./utils/vue-router.js'),
-	VueResource = require('./utils/vue-resource.js'),
-	$ = require('./utils/jquery.js');
-
+	$ = require('./utils/jquery.js'),
+	cookie_func = require('./utils/jquery.cookie.js');
 window.Vue = Vue;
 window.VueRouter = VueRouter;
-window.VueResource = VueResource;
+cookie_func($);
 window.$ = $;
-
+window._server_url = 'http://120.24.244.99:8000/';
 Vue.use(VueRouter);
-Vue.use(VueResource);
 
 import Skeleton from './Skeleton.vue';
 import Article from './Article.vue';
@@ -28,31 +26,38 @@ Vue.component('comment-template', CommentTemplate);
 var router = new VueRouter();
 var PerkApp= Vue.extend(Skeleton);
 router.map({
-	'/article': {
-		component: Article
+	'/article/:page': {
+		component: Article,
+		name: 'article'
 	},
 	'/message': {
-		component: Message
+		component: Message,
+		name: 'message'
 	},
 	'/user': {
-		component: User
+		component: User,
+		name: 'user'
 	},
-	'/article/reply': {
-		component: Reply
+	'/article/:page/reply': {
+		component: Reply,
+		name: 'reply'
 	},
 	'/user/login': {
-		component: Login
+		component: Login,
+		name: 'login'
 	},
 	'/user/regist': {
-		component: Regist
+		component: Regist,
+		name: 'regist'
 	},
 	'/user/edit': {
-		component: Edit
+		component: Edit,
+		name: 'edit'
 	}
 });
 
 router.beforeEach(function (transition) {
-	if (transition.to.path == '/user' && !window._auth) {
+	if (transition.to.path == '/user' && !window.$.cookie('auth')) {
 		//随便写的身份验证...
 		router.go({ path: '/user/login' });
 	}else{

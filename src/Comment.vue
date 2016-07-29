@@ -9,19 +9,20 @@
 			<a href="#" @click.prevent="commentToggle('activeMe')" class="link-perk" :class="{ 'active': activeMe }">与我有关</a>
 		</div>
 		<div id="activeHot" v-show="activeHot">
-			<comment-template></comment-template>
+			<comment-template :comments="hotComments"></comment-template>
 		</div>
 		<div id="activeAll" v-show="activeAll">
-			<comment-template></comment-template>
+			<comment-template :comments="allComments"></comment-template>
 		</div>
 		<div id="activeMe" v-show="activeMe">
-			<comment-template></comment-template>
+			<comment-template :comments="meComments"></comment-template>
 		</div>
 	</div>
 </template>
 
 <script>
 	export default{
+		props: ['hotComments', 'allComments', 'meComments'],
 		data: function(){
 			return {
 				activeHot: true,
@@ -31,11 +32,15 @@
 		},
 		methods: {
 			commentToggle: function(str){
-				this.activeHot = this.activeAll = this.activeMe = false;
-				this[str] = true;
+				if(!window.$.cookie('user') && str == 'activeMe'){
+					window._page = this.$route.params.page;
+					window._preAction = 'activeMe';
+					this.$route.router.go({ name: 'login' });
+				}else{
+					this.activeHot = this.activeAll = this.activeMe = false;
+					this[str] = true;
+				}
 			}
-		},
-		ready: function(){
 		}
 	}
 </script>

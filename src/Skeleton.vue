@@ -8,21 +8,21 @@
 		<div id="PerkMenu">
 			<ul class="menu">
 				<li>
-					<a class="link-default" v-link="{ path: '/article' }">
+					<a class="link-default" v-link="{ name: 'article', params: { page: this.$route.params.page } }">
 						<span class="icon icon-article">&nbsp;</span>
 						<br/>
 						<span class="text">文章</span>
 					</a>
 				</li>
 				<li>
-					<a class="link-default" v-link="{ path: '/message' }">
+					<a class="link-default" v-link="{ name: 'message' }">
 						<span class="icon icon-message">&nbsp;</span>
 						<br/>
 						<span class="text">消息</span>
 					</a>
 				</li>
 				<li>
-					<a class="link-default" v-link="{ path: '/user' }">
+					<a class="link-default" v-link="{ name: 'user' }">
 						<span class="icon icon-user">&nbsp;</span>
 						<br/>
 						<span class="text">个人中心</span>
@@ -35,9 +35,6 @@
 
 <script>
 	export default{
-		data: function(){
-			return {}
-		},
 		ready: function(){
 			//窗口向上滑动的时候，影藏menu
 			var $PerkMenu = $('#PerkMenu');
@@ -54,10 +51,6 @@
 					window.previousScrollTop = top;
 				}
 			});
-			//默认页面
-			if(this.$route.path == '/'){
-				this.$route.router.go({ path: '/article' });
-			}
 		}
 	}
 </script>

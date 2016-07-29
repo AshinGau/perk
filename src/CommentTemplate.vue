@@ -1,23 +1,28 @@
 <template>
 	<ul class="comment-list">
 		<li v-for="(cindex, comment) in comments">
-			<div class="comment-portrait"><img :src="comment.portrait"/></div>
+			<div class="comment-portrait">
+				<img v-if="comment.user.profile.head_img" :src="comment.user.profile.head_img"/>
+				<img v-else :src.literal="public/img/bg/portrait.png"/>
+			</div>
 			<div class="comment-box">
 				<div class="row">
-					<span class="text-gray">{{ comment.username }}</span>
+					<span class="text-gray">{{ comment.user.profile.nick_name }}</span>
 					<span class="pull-right">
-						<span class="text-gray">{{ comment.likes }}</span>
+						<span class="text-gray">{{ comment.n_likes }}</span>
 						<span class="icon icon-like"></span>
 						<span>&nbsp;</span>
-						<span class="text-gray">{{ comment.cnt }}</span>
+						<span class="text-gray">{{ comment.n_replies }}</span>
 						<span class="icon icon-comment-cnt"></span>
 					</span>
 				</div>
 				<div class="comment-content"><a class="link-default" href="#" @click.prevent="reply1(cindex)">{{ comment.content }}</a></div>
+				<div class="comment-date">{{ parseDate(comment.pub_date) }}</div>
 				<ul class="comment-reply-list">
 					<li v-for="(rindex, reply) in comment.replys">
-						<div class="text-gray">{{ reply.username }}:</div>
+						<div class="text-gray"><i>{{ reply.user.profile.nick_name }}</i> 回复 <i>{{ reply.reply_comment.user.profile.nick_name }}</i>:</div>
 						<div class="reply-content"><a class="link-default" href="#" @click.prevent="reply2(cindex, rindex)">{{ reply.content }}</a></div>
+						<div class="comment-date">{{ parseDate(reply.pub_date) }}</div>
 					</li>
 				</ul>
 			</div>
@@ -26,30 +31,6 @@
 </template>
 
 <script>
-	var demo_comments = [
-		{
-			portrait: 'public/img/bg/portrait.png',
-			username: '娄佩良',
-			likes: 99,
-			cnt: 12,
-			content: '感人肺腑，发自心声',
-			replys: [
-				{ username: '高鑫', content: '没事别装逼' },
-				{ username: '夏雨民', content: '有点闷骚' }
-			]
-		},
-		{
-			portrait: 'public/img/bg/portrait.png',
-			username: '夏雨民',
-			likes: 99,
-			cnt: 12,
-			content: '楼上的老湿好淫好湿',
-			replys: [
-				{ username: '高鑫', content: '没事别装逼' },
-				{ username: '娄佩良', content: '瞎鸡巴乱说' }
-			]
-		}
-	];
 	//评论、回复，全局对象
 	window._perk_reply = {
 		heading: '文章标题',
@@ -59,12 +40,29 @@
 		//一系列的认证信息，在这儿添加
 	};
 	export default{
-		data: function(){
-			return {
-				comments: demo_comments
-			}
-		},
+		props: ['comments'],
 		methods: {
+			parseDate: function(dt){
+				var now = new Date(),
+					days = (now - dt)/24/60/60/1000,
+					str;
+				if(days < 1/24){
+					str = Math.ceil(days*24*60)+'分钟前';
+				}else if(days < 1){
+					str = Math.ceil(days*24)+'小时前';
+				}else if(days < 2){
+					str = "昨天";
+				}else{
+					var month = dt.getMonth() + 1,
+						day = dt.getDate();
+					if(month < 10)
+						month = '0' + month.toString();
+					if(day < 10)
+						day = '0' + day.toString();
+					str = month + '/' + day;				
+				}
+				return str;
+			},
 			reply1: function(cindex){
 				window._perk_reply.heading = this.comments[cindex].content;
 				window._perk_reply.placeholder = '回复' + this.comments[cindex].username;
@@ -75,8 +73,6 @@
 				window._perk_reply.placeholder = '回复' + this.comments[cindex].replys[rindex].username;
 				this.$route.router.go({ path: '/article/reply' });
 			}
-		},
-		ready: function(){
 		}
 	}
 </script>
