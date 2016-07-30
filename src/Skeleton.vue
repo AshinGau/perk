@@ -8,7 +8,7 @@
 		<div id="PerkMenu">
 			<ul class="menu">
 				<li>
-					<a class="link-default" v-link="{ name: 'article', params: { page: this.$route.params.page } }">
+					<a class="link-default" v-link="{ path: '/article/' + page }">
 						<span class="icon icon-article">&nbsp;</span>
 						<br/>
 						<span class="text">文章</span>
@@ -35,7 +35,13 @@
 
 <script>
 	export default{
+		data: function(){
+			return {
+				page: this.$route.params.page
+			}
+		},
 		ready: function(){
+			window._page = this.$route.params.page;
 			//窗口向上滑动的时候，影藏menu
 			var $PerkMenu = $('#PerkMenu');
 			window.$win = $(window);

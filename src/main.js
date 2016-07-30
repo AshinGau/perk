@@ -1,11 +1,7 @@
 var Vue = require('./utils/vue.js'),
-	VueRouter = require('./utils/vue-router.js'),
-	$ = require('./utils/jquery.js'),
-	cookie_func = require('./utils/jquery.cookie.js');
+	VueRouter = require('./utils/vue-router.js');
 window.Vue = Vue;
 window.VueRouter = VueRouter;
-cookie_func($);
-window.$ = $;
 window._server_url = 'http://120.24.244.99:8000/';
 Vue.use(VueRouter);
 
@@ -56,9 +52,26 @@ router.map({
 	}
 });
 
+if(window.$.cookie('auth')){
+	var auth = window.$.cookie('auth');
+	window.$.ajax({
+		dataType: 'json',
+		url: window._server_url + 'user/',
+		type: 'GET',
+		beforeSend: function(request) {
+			request.setRequestHeader("Authorization", 'Token ' + auth);
+		},
+		success: function(res){
+			console.log(res);
+		},
+		error: function(){
+			console.log('inner ajax error');
+		}
+	});
+}
+
 router.beforeEach(function (transition) {
-	if (transition.to.path == '/user' && !window.$.cookie('auth')) {
-		//随便写的身份验证...
+	if (transition.to.path == '/user' && !window.$.cookie('user')) {
 		router.go({ path: '/user/login' });
 	}else{
 		transition.next();

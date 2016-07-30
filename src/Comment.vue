@@ -32,13 +32,13 @@
 		},
 		methods: {
 			commentToggle: function(str){
+				this.activeHot = this.activeAll = this.activeMe = false;
+				this[str] = true;
 				if(!window.$.cookie('user') && str == 'activeMe'){
-					window._page = this.$route.params.page;
-					window._preAction = 'activeMe';
-					this.$route.router.go({ name: 'login' });
+					window.$.cookie('user', 2);
+					this.$dispatch('CallUpdateMeComments');
 				}else{
-					this.activeHot = this.activeAll = this.activeMe = false;
-					this[str] = true;
+					this.$dispatch('CallUpdateMeComments');
 				}
 			}
 		}

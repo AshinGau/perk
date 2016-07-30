@@ -32,7 +32,8 @@
 				articleFolded: true,
 				articleOp: '展开全文 >>',
 				article: {},
-				cAll: []
+				cAll: [],
+				cMe: []
 			}
 		},
 		computed: {
@@ -42,8 +43,21 @@
 					return a.hot < b.hot;
 				});
 				return _cHot;
+			}
+		},
+		watch: {
+			articleFolded: function(val){
+				if(val)
+					this.articleOp = '展开全文 >>';
+				else
+					this.articleOp = '收起全文 <<';
+			}
+		},
+		methods: {
+			articleToggle: function(event){
+				this.articleFolded =! this.articleFolded;
 			},
-			cMe: function(){
+			getMeComments: function(){
 				var _cMe = [],
 					comments = this.cAll;
 				if(window.$.cookie('user'))
@@ -61,26 +75,21 @@
 						}
 					}
 				return _cMe;
+			},
+			updateMeComments: function(){
+				var _cMe = this.getMeComments();
+				this.$set('cMe', _cMe);
 			}
 		},
-		watch: {
-			articleFolded: function(val){
-				if(val)
-					this.articleOp = '展开全文 >>';
-				else
-					this.articleOp = '收起全文 <<';
-			}
-		},
-		methods: {
-			articleToggle: function(event){
-				this.articleFolded =! this.articleFolded;
+		events: {
+			CallUpdateMeComments: function(){
+				this.updateMeComments();
 			}
 		},
 		ready: function(){
 			var urlstr = window._server_url + 'article/' + this.$route.params.page,
 				self = this,
 				article_obj = {};
-
 			window.$.ajax({
 				dataType: 'json',
 				url: urlstr,
@@ -135,10 +144,16 @@
 						}
 					}
 					for(var key in comments){
-						comments[key].n_replies = comments[key].replys.length + 1;
+						comments[key].n_replies = comments[key].replys.length;
 						comments[key].hot = comments[key].n_replies * 3 + comments[key].n_likes;
 					}
+					comments.sort(function(a, b){
+						return a.pub_date < b.pub_date;
+					});
 					self.$set('cAll', comments);
+					window._all_comments = self.cAll;
+					window._hot_comments = self.cHot;
+					window._me_comments = self.cMe;
 				}
 			});
 		}
