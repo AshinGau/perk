@@ -37,11 +37,13 @@
 	export default{
 		data: function(){
 			return {
-				page: this.$route.params.page
+				page: (this.$route.params.page || $.cookie('page'))
 			}
-		},
+		}, 
 		ready: function(){
-			window._page = this.$route.params.page;
+			if(!$.cookie('page'))
+				$.cookie('page', this.$route.params.page);
+			window._page = (this.$route.params.page || $.cookie('page'));
 			//窗口向上滑动的时候，影藏menu
 			var $PerkMenu = $('#PerkMenu');
 			window.$win = $(window);

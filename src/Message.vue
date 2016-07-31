@@ -1,8 +1,9 @@
 <template>
-	<div id="PerkMessage">
+	<div id="PerkMessages">
 		<div class="interval">
 			<div class="text-center">
-				<img :src="user.portrait" class="perk-portrait" />
+				<img v-if="user.img" :src="user.img" />
+				<img v-else :src.literal="public/img/bg/portrait_default.png"  class="perk-portrait" />
 			</div>
 			<div class="text-center">
 				<span class="text-muted">{{ user.name }}</span>
@@ -14,10 +15,7 @@
 				<tbody>
 					<tr v-for="info in infos">
 						<td>
-							<a href="#" class="link-default">
-								<span v-if="info.comment"><span class="text-primary">{{ info.username }}</span>在<span class="text-primary">《{{ info.article }}》</span>文章下评论了我</span>
-								<span v-else><span class="text-primary">{{ info.username }}</span>在<span class="text-primary">《{{ info.article }}》</span>文章下的评论点了赞</span>
-							</a>
+							<a href="#" class="link-default">{{ info.content }}</a>
 						</td>
 					</tr>
 				</tbody>
@@ -28,24 +26,16 @@
 
 <script>
 	export default{
-		data: function(){
-			return {
-				user: {
-					portrait: 'public/img/bg/portrait.png',
-					name: '娄佩良'
-				},
-				infos: [
-					{
-						comment: true,
-						username: '高鑫',
-						article: '程序员就是累'
-					},{
-						comment: false,
-						username: '夏雨民',
-						article: '最最风骚怪'
-					}
-				]
-			}
+		ready: function(){
+			var self = this;
+			var message_op = window.Ajaxop.message();
+			message_op.done(function(res){
+				self.$set('user',{
+					img: window._user_info.profile.head_img,
+					name: window._user_info.profile.nick_name
+				});
+				self.$set('infos', res);
+			});
 		}
 	}
 </script>

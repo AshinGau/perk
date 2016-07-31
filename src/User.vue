@@ -2,17 +2,18 @@
 	<div id="PerkUser">
 		<div class="interval">
 			<div class="text-center">
-				<img :src="user.portrait" class="perk-portrait" />
+				<img v-if="user.img" :src="user.img" />
+				<img v-else :src.literal="public/img/bg/portrait_default.png"  class="perk-portrait" />
 			</div>
 			<div class="text-center">
 				<span class="text-muted">{{ user.name }}</span>
 			</div>
 		</div>	
 		<div class="container">
-			<h4 class="box-stress">基本信息<a v-link="{ path: '/user/edit' }">编辑</a></h4>
+			<h4 class="box-stress">基本信息</h4>
 			<table class="table table-bordered">
 				<tbody>
-					<tr v-for="info in infos">
+					<tr v-for="info in user.infos">
 						<td>{{ info.field }}</td>
 						<td>{{ info.content }}</td>
 					</tr>
@@ -24,20 +25,22 @@
 
 <script>
 	//用户信息全局对象
-	window._user_infos = [
-		{ field: '姓名', content: '娄佩良' },
-		{ field: '学校', content: '重庆八中' },
-		{ field: '电话', content: '18220529737' },
-		{ field: '邮箱', content: 'ashin@ashin.space' }
-	];
+	window._user_info_obj = {
+		infos: [],
+		img: '',
+		name: ''
+	};
+	window._USER_INFO = function(res){
+		var obj = window._user_info_obj;
+		obj.img = res.profile.head_img;
+		obj.name = res.profile.nick_name;
+		obj.infos.push({ field: '姓名', content: res.profile.nick_name });
+		obj.infos.push({ field: '学校', content: res.profile.school });
+	}
 	export default{
 		data: function(){
 			return {
-				user: {
-					portrait: 'public/img/bg/portrait.png',
-					name: '娄佩良'
-				},
-				infos: window._user_infos
+				user: window._user_info_obj
 			}
 		}
 	}

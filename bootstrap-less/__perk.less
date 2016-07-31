@@ -10,15 +10,19 @@
 // Core CSS
 @import "scaffolding.less";
 @import "type.less";
-@import "code.less";
+//@import "code.less";
 @import "grid.less";
 @import "tables.less";
 @import "forms.less";
 @import "buttons.less";
+@import "close.less";
 
 // Utility classes
 @import "utilities.less";
 @import "responsive-utilities.less";
+
+// Components w/ JavaScript
+@import "modals.less";
 
 //variables
 @gray-line-color: #eee;
@@ -138,22 +142,7 @@ ul{
 	}
 }
 
-.reply-heading{
-	color: #000;
-	font-weight: 100;
-	padding: 10px 0px;
-	font-size: 18px;
-	line-height: 1.4;
-}
-
-.reply-content{
-	textarea{
-		resize: none;
-		height: 100px;
-	}
-}
-
-#PerkUser, #PerkUserEdit, #PerkMessage{
+#PerkUser, #PerkUserEdit, #PerkMessages{
 	padding-top: 20px;
 }
 
@@ -242,6 +231,39 @@ ul{
 .comment-date{
 	font-size: 10px;
 	.text-gray;
+}
+
+#PerkMessage{
+	position: fixed;
+	bottom: -30px;
+	left: 0px;
+	width: 100%;
+	text-align: center;
+	transition: all .5s ease;
+	&.up{
+		animation: perk-message-animation 3s;
+	}
+}
+
+@keyframes perk-message-animation {
+  0% {
+    bottom: -30px;
+  }
+  17% {
+    bottom: 50px;
+  }
+  83% {
+	bottom: 50px;
+  }
+  100% {
+    bottom: -30px;
+  }
+}
+
+#PerkMessageInfo{
+	display: inline-block;
+	padding: 5px 10px;
+	background: rgba(0,0,0,0.01);
 }
 
 @media (min-width: @screen-phone){

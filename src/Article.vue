@@ -40,7 +40,12 @@
 			cHot: function(){
 				var _cHot = Object.assign([], this.cAll);
 				_cHot.sort(function(a, b){
-					return a.hot < b.hot;
+					var ahot = a.n_replies*3 + a.n_likes,
+						bhot = b.n_replies*3 + a.n_likes;
+					if(ahot > bhot)
+						return -1;
+					else
+						return 1;
 				});
 				return _cHot;
 			}
@@ -74,6 +79,7 @@
 							}
 						}
 					}
+				window._me_comments = _cMe;
 				return _cMe;
 			},
 			updateMeComments: function(){
@@ -93,10 +99,6 @@
 			window.$.ajax({
 				dataType: 'json',
 				url: urlstr,
-				beforeSend: function(request) {
-					if(window.$.cookie('auth'))
-                        request.setRequestHeader("Authorization", window.$.cookie('auth'));
-                },
 				success: function(res){
 					article_obj.title = res.title;
 					article_obj.brief = res.brief;
@@ -145,15 +147,16 @@
 					}
 					for(var key in comments){
 						comments[key].n_replies = comments[key].replys.length;
-						comments[key].hot = comments[key].n_replies * 3 + comments[key].n_likes;
 					}
 					comments.sort(function(a, b){
 						return a.pub_date < b.pub_date;
 					});
+					for(var key in comments){
+						comments[key].cindex = key;
+					}
 					self.$set('cAll', comments);
 					window._all_comments = self.cAll;
 					window._hot_comments = self.cHot;
-					window._me_comments = self.cMe;
 				}
 			});
 		}

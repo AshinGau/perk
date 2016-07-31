@@ -13,7 +13,51 @@
 
 <body>
 	<perk-app id="PerkApp"></perk-app>
+
+	<div class="modal fade" id="PerkLoginModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">请先登陆</h4>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<input id="PerkLoginModalId" type="text" class="form-control" placeholder="手机/账户"/>
+					</div>
+					<input id="PerkLoginModalPwd" type="password" class="form-control" placeholder="密码"/>
+					<div id="PerkLoginModalError" class="text-danger hide" style="margin-top:10px;">*账户或密码错误!</div>
+				</div>
+				<div class="modal-footer">
+					<button id="PerkLoginModalCancel" type="button" class="btn btn-default btn-nano" data-dismiss="modal">取消</button>
+					<button id="PerkLoginModalAffirm" type="button" class="btn btn-primary btn-nano">登陆</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="PerkCommentModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="PerkCommentTitle"></h4>
+				</div>
+				<div class="modal-body">
+					<textarea id="PerkCommentContent" class="form-control" style="resize:none;height:80px;"></textarea>
+					<div id="PerkCommentError" class="text-danger hide" style="margin-top:10px;">*评论发生异常!</div>
+				</div>
+				<div class="modal-footer">
+					<button id="PerkCommentCancel" type="button" class="btn btn-default btn-nano" data-dismiss="modal">取消</button>
+					<button id="PerkCommentAffirm" type="button" class="btn btn-primary btn-nano">提交</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="PerkMessage"><span id="PerkMessageInfo" class="text-primary"></span></div>
+
+	<script type="text/javascript" src="public/dist/perk.js"></script>
 </body>
-<script type="text/javascript" src="public/dist/perk.js"></script>
 
 </html>

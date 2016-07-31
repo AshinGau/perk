@@ -2,18 +2,18 @@
 	<ul class="comment-list">
 		<li v-for="(cindex, comment) in comments">
 			<div class="comment-portrait">
-				<img v-if="comment.user.profile.head_img" :src="comment.user.profile.head_img"/>
-				<img v-else :src.literal="public/img/bg/portrait.png"/>
+				<img v-if="comment.user.profile.head_img" :src="comment.user.profile.head_img" />
+				<img v-else :src.literal="public/img/bg/portrait.png" />
 			</div>
 			<div class="comment-box">
 				<div class="row">
 					<span class="text-gray">{{ comment.user.profile.nick_name }}</span>
 					<span class="pull-right">
 						<span class="text-gray">{{ comment.n_likes }}</span>
-						<span class="icon icon-like"></span>
-						<span>&nbsp;</span>
-						<span class="text-gray">{{ comment.n_replies }}</span>
-						<span class="icon icon-comment-cnt"></span>
+					<a class="icon icon-like" href="#" @click.prevent="like(comment, $event)"></a>
+					<span>&nbsp;</span>
+					<span class="text-gray">{{ comment.n_replies }}</span>
+					<span class="icon icon-comment-cnt"></span>
 					</span>
 				</div>
 				<div class="comment-content"><a class="link-default" href="#" @click.prevent="reply1(cindex)">{{ comment.content }}</a></div>
@@ -27,18 +27,11 @@
 				</ul>
 			</div>
 		</li>
+		<li v-if="!comments.length">暂无评论～～</li>
 	</ul>
 </template>
 
 <script>
-	//评论、回复，全局对象
-	window._perk_reply = {
-		heading: '文章标题',
-		placeholder: '添加评论',
-		content: '',
-		userId: ''
-		//一系列的认证信息，在这儿添加
-	};
 	export default{
 		props: ['comments'],
 		methods: {
@@ -64,14 +57,65 @@
 				return str;
 			},
 			reply1: function(cindex){
-				window._perk_reply.heading = this.comments[cindex].content;
-				window._perk_reply.placeholder = '回复' + this.comments[cindex].username;
-				this.$route.router.go({ path: '/article/reply' });
+				var comment = this.comments[cindex],
+					title = '回复: ' + comment.content,
+					holder = '回复' + comment.user.profile.nick_name;
+				this.reply(comment.id, title, holder, this.comments[cindex].id);
 			},
 			reply2: function(cindex, rindex){
-				window._perk_reply.heading = this.comments[cindex].replys[rindex].content;
-				window._perk_reply.placeholder = '回复' + this.comments[cindex].replys[rindex].username;
-				this.$route.router.go({ path: '/article/reply' });
+				var comment = this.comments[cindex].replys[rindex],
+					title = '回复: ' + comment.content,
+					holder = '回复' + comment.user.profile.nick_name;
+				this.reply(comment.id, title, holder,  this.comments[cindex].id)
+			},
+			update_comments: function(reply_to, id, res){
+				var cAll = window._all_comments;
+				for(var key in cAll){
+					if(cAll[key].id == id){
+						var rc = cAll[key].replys;
+						if(id == reply_to)
+							res.reply_comment = cAll[key];
+						else{
+							for(var loop in rc)
+								if(rc[loop].id == reply_to)
+									res.reply_comment = rc[loop];
+						}
+						rc.push(res);
+						break;
+					}
+				}
+			},
+			reply: function(reply_to, title, holder, id){
+				var self = this;
+				if(!($.cookie('user'))){
+					window.Ajaxop.LOGIN_MODAL(function(){
+						window.Ajaxop.COMMENT_MODAL(reply_to, title, holder, function(res){
+							self.update_comments(reply_to, id, res);
+						});
+					})
+				}else{
+					window.Ajaxop.COMMENT_MODAL(reply_to, title, holder, function(res){
+						self.update_comments(reply_to, id, res);
+					});
+				}
+			},
+			like: function(comment, event){
+				var self = this;
+				if(!($.cookie('user'))){
+					window.Ajaxop.LOGIN_MODAL(function(){
+						self.like_assist(comment);
+					})
+				}else{
+					self.like_assist(comment);
+				}
+			},
+			like_assist: function(comment){
+				var like_op = window.Ajaxop.like(comment.id);
+				like_op.done(function(){
+					comment.n_likes++;
+				}).fail(function(){
+					window._MESSAGE('您已经点过赞～～');
+				});
 			}
 		}
 	}

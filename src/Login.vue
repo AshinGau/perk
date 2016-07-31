@@ -40,37 +40,16 @@
 						'username': self.username,
 						'password': self.password
 					};
-				window.$.ajax({
-					url: window._server_url + 'api-token-auth/',
-					type: 'POST',
-					dataType: 'json',
-					data: body,
-					success: function(res){
-						self.loginError = false;
-						window.$.cookie('auth', res.token, { expires: 7 });
-
-						/*
-						window.$.ajax({
-							dataType: 'json',
-							url: window._server_url + 'user/',
-							type: 'GET',
-							beforeSend: function(request) {
-								request.setRequestHeader("Authorization", 'Basic ' + window.$.cookie('auth'));
-							},
-							success: function(res){
-								console.log(res);
-							},
-							error: function(){
-								console.log('inner ajax error');
-							}
-						});
-						*/
-
-					},
-					error: function(){
-						self.loginError = true;
-					}
-				});
+				var login_op = window.Ajaxop.login(body);
+				login_op.done(function(res){
+					self.loginError = false;
+					$.cookie('auth', res.token);
+					window.Ajaxop.INIT_AUTH(function(){
+						self.$route.router.go({ name: window._preAction });
+					});
+				}).fail(function(){
+					self.loginError = true;
+				})
 			}
 		}
 	}
