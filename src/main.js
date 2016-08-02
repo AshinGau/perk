@@ -65,7 +65,7 @@ router.beforeEach(function (transition) {
 router.start(PerkApp, '#PerkApp');
 
 window._MESSAGE = function (msg) {
-	$('#PerkMessageInfo').text(msg);
+	$('#PerkMessageInfo').html(msg);
 	var $msg = $('#PerkMessage').removeClass('up');
 	setTimeout(function () {
 		$msg.addClass('up');

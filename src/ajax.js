@@ -116,5 +116,16 @@ module.exports = {
 				request.setRequestHeader("Authorization", 'Token ' + $.cookie('auth'));
 			}
 		})
+	},
+	regist: function(body){
+		return $.ajax({
+			dataType: 'json',
+			url: window._server_url + 'register/',
+			type: 'POST',
+			data: body,
+			beforeSend: function (request) {
+				request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+			}
+		});
 	}
 }

@@ -137,7 +137,7 @@
 	router.start(PerkApp, '#PerkApp');
 
 	window._MESSAGE = function (msg) {
-		$('#PerkMessageInfo').text(msg);
+		$('#PerkMessageInfo').html(msg);
 		var $msg = $('#PerkMessage').removeClass('up');
 		setTimeout(function () {
 			$msg.addClass('up');
@@ -212,7 +212,7 @@
 /* 3 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div id=\"PerkApp\">\n\t<div id=\"PerkBody\">\n\t\t<!--路由视图-->\n\t\t<router-view keep-alive></router-view>\n\t</div>\n\t<!--底部菜单-->\n\t<div id=\"PerkMenu\">\n\t\t<ul class=\"menu\">\n\t\t\t<li>\n\t\t\t\t<a class=\"link-default\" v-link=\"{ path: '/article/' + page }\">\n\t\t\t\t\t<span class=\"icon icon-article\">&nbsp;</span>\n\t\t\t\t\t<br/>\n\t\t\t\t\t<span class=\"text\">文章</span>\n\t\t\t\t</a>\n\t\t\t</li>\n\t\t\t<li>\n\t\t\t\t<a class=\"link-default\" v-link=\"{ name: 'message' }\">\n\t\t\t\t\t<span class=\"icon icon-message\">&nbsp;</span>\n\t\t\t\t\t<br/>\n\t\t\t\t\t<span class=\"text\">消息</span>\n\t\t\t\t</a>\n\t\t\t</li>\n\t\t\t<li>\n\t\t\t\t<a class=\"link-default\" v-link=\"{ name: 'user' }\">\n\t\t\t\t\t<span class=\"icon icon-user\">&nbsp;</span>\n\t\t\t\t\t<br/>\n\t\t\t\t\t<span class=\"text\">个人中心</span>\n\t\t\t\t</a>\n\t\t\t</li>\n\t\t</ul>\t\n\t</div>\n</div>\n";
+	module.exports = "\n<div id=\"PerkApp\">\n\t<div id=\"PerkBody\">\n\t\t<!--路由视图-->\n\t\t<router-view></router-view>\n\t</div>\n\t<!--底部菜单-->\n\t<div id=\"PerkMenu\">\n\t\t<ul class=\"menu\">\n\t\t\t<li>\n\t\t\t\t<a class=\"link-default\" v-link=\"{ path: '/article/' + page }\">\n\t\t\t\t\t<span class=\"icon icon-article\">&nbsp;</span>\n\t\t\t\t\t<br/>\n\t\t\t\t\t<span class=\"text\">文章</span>\n\t\t\t\t</a>\n\t\t\t</li>\n\t\t\t<li>\n\t\t\t\t<a class=\"link-default\" v-link=\"{ name: 'message' }\">\n\t\t\t\t\t<span class=\"icon icon-message\">&nbsp;</span>\n\t\t\t\t\t<br/>\n\t\t\t\t\t<span class=\"text\">消息</span>\n\t\t\t\t</a>\n\t\t\t</li>\n\t\t\t<li>\n\t\t\t\t<a class=\"link-default\" v-link=\"{ name: 'user' }\">\n\t\t\t\t\t<span class=\"icon icon-user\">&nbsp;</span>\n\t\t\t\t\t<br/>\n\t\t\t\t\t<span class=\"text\">个人中心</span>\n\t\t\t\t</a>\n\t\t\t</li>\n\t\t</ul>\t\n\t</div>\n</div>\n";
 
 /***/ },
 /* 4 */
@@ -1218,11 +1218,34 @@
 	exports.default = {
 		data: function data() {
 			return {
-				perkLogo: 'public/img/bg/perk.jpg'
+				'username_error': false,
+				'password_error': false,
+				'nick_error': false
 			};
 		},
 		methods: {
-			submitInfo: function submitInfo() {}
+			submitInfo: function submitInfo() {
+				var self = this;
+				var body = {
+					'username': self.username,
+					'password': self.password,
+					'profile.head_img': '',
+					'profile.nick_name': self.nick_name,
+					'profile.school': self.school
+				};
+				var regist_op = window.Ajaxop.regist(body);
+				regist_op.done(function () {
+					self.username_error = self.password_error = self.nick_error = false;
+					window._MESSAGE('注册成功，快去登陆吧');
+				}).fail(function (xhr, msg, exp) {
+					window._MESSAGE('<span class="text-danger">注册失败，请检查注册信息</span>');
+					var res = xhr.responseJSON;
+					console.log(res);
+					if (res.username) self.username_error = true;
+					if (res.password) self.password_error = true;
+					if (res.profile) self.nick_error = true;
+				});
+			}
 		}
 	};
 
@@ -1230,7 +1253,7 @@
 /* 58 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div id=\"PerkRegist\" class=\"container\">\n\t<div class=\"perk-logo\">\n\t\t<img :src=\"perkLogo\" style=\"display:block;width:100%;\"/>\n\t</div>\n\t<h3 class=\"text-center\">注册</h3>\n\t<div class=\"form-group\">\n\t\t<input type=\"text\" class=\"form-control\" placeholder=\"手机/账户\" v-model=\"userId\" />\n\t</div>\n\t<div class=\"form-group\">\n\t\t<input type=\"text\" class=\"form-control\" placeholder=\"昵称\" v-model=\"userNickname\" />\n\t</div>\n\t<div class=\"form-group\">\n\t\t<input type=\"password\" class=\"form-control\" placeholder=\"密码\" v-model=\"userPwd\" />\n\t</div>\n\t<div class=\"form-group\">\n\t\t<button type=\"button\" @click=\"submitInfo\" class=\"btn btn-nano btn-block btn-primary\">注册</button>\n\t</div>\n\t<div class=\"form-group row\">\n\t\t<span class=\"pull-right\">\n\t\t\t<i class=\"text-muted\">已有账户！</i>\n\t\t\t<a v-link=\"{ path: '/user/login' }\">马上登陆</a>\n\t\t</span>\n\t</div>\n</div>\n";
+	module.exports = "\n<div id=\"PerkRegist\" class=\"container\">\n\t<div class=\"perk-logo\">\n\t\t<img :src.literal=\"public/img/bg/perk.jpg\" style=\"display:block;width:100%;\"/>\n\t</div>\n\t<h3 class=\"text-center\">注册</h3>\n\t<div class=\"form-group\">\n\t\t<input type=\"text\" class=\"form-control\" placeholder=\"手机/账户\" v-model=\"username\"/>\n\t\t<div v-show=\"username_error\" class=\"text-danger\">*该用户已存在!</div>\n\t</div>\n\t<div class=\"form-group\">\n\t\t<input type=\"text\" class=\"form-control\" placeholder=\"昵称\" v-model=\"nick_name\" />\n\t\t<div v-show=\"nick_error\" class=\"text-danger\">*不能为空!</div>\n\t</div>\n\t<div class=\"form-group\">\n\t\t<input type=\"password\" class=\"form-control\" placeholder=\"密码\" v-model=\"password\" />\n\t\t<div v-show=\"password_error\" class=\"text-danger\">*不能为空!</div>\n\t</div>\n\t<div class=\"form-group\">\n\t\t<input type=\"text\" class=\"form-control\" placeholder=\"学校\" v-model=\"school\" />\n\t</div>\n\t<div class=\"form-group\">\n\t\t<button type=\"button\" @click=\"submitInfo\" class=\"btn btn-nano btn-block btn-primary\">注册</button>\n\t</div>\n\t<div class=\"form-group row\">\n\t\t<span class=\"pull-right\">\n\t\t\t<i class=\"text-muted\">已有账户！</i>\n\t\t\t<a v-link=\"{ path: '/user/login' }\">马上登陆</a>\n\t\t</span>\n\t</div>\n</div>\n";
 
 /***/ },
 /* 59 */
@@ -1357,7 +1380,7 @@
 /* 61 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<ul class=\"comment-list\">\n\t<li v-for=\"(cindex, comment) in comments\">\n\t\t<div class=\"comment-portrait\">\n\t\t\t<img v-if=\"comment.user.profile.head_img\" :src=\"comment.user.profile.head_img\" />\n\t\t\t<img v-else :src.literal=\"public/img/bg/portrait.png\" />\n\t\t</div>\n\t\t<div class=\"comment-box\">\n\t\t\t<div class=\"row\">\n\t\t\t\t<span class=\"text-gray\">{{ comment.user.profile.nick_name }}</span>\n\t\t\t\t<span class=\"pull-right\">\n\t\t\t\t\t<span class=\"text-gray\">{{ comment.n_likes }}</span>\n\t\t\t\t<a class=\"icon icon-like\" href=\"#\" @click.prevent=\"like(comment, $event)\"></a>\n\t\t\t\t<span>&nbsp;</span>\n\t\t\t\t<span class=\"text-gray\">{{ comment.n_replies }}</span>\n\t\t\t\t<span class=\"icon icon-comment-cnt\"></span>\n\t\t\t\t</span>\n\t\t\t</div>\n\t\t\t<div class=\"comment-content\"><a class=\"link-default\" href=\"#\" @click.prevent=\"reply1(cindex)\">{{ comment.content }}</a></div>\n\t\t\t<div class=\"comment-date\">{{ parseDate(comment.pub_date) }}</div>\n\t\t\t<ul class=\"comment-reply-list\">\n\t\t\t\t<li v-for=\"(rindex, reply) in comment.replys\">\n\t\t\t\t\t<div class=\"text-gray\"><i>{{ reply.user.profile.nick_name }}</i> 回复 <i>{{ reply.reply_comment.user.profile.nick_name }}</i>:</div>\n\t\t\t\t\t<div class=\"reply-content\"><a class=\"link-default\" href=\"#\" @click.prevent=\"reply2(cindex, rindex)\">{{ reply.content }}</a></div>\n\t\t\t\t\t<div class=\"comment-date\">{{ parseDate(reply.pub_date) }}</div>\n\t\t\t\t</li>\n\t\t\t</ul>\n\t\t</div>\n\t</li>\n\t<li v-if=\"!comments.length\">暂无评论～～</li>\n</ul>\n";
+	module.exports = "\n<ul class=\"comment-list\">\n\t<li v-for=\"(cindex, comment) in comments\">\n\t\t<div class=\"comment-portrait\">\n\t\t\t<img v-if=\"comment.user.profile.head_img\" :src=\"comment.user.profile.head_img\" />\n\t\t\t<img v-else :src.literal=\"public/img/bg/portrait.png\" />\n\t\t</div>\n\t\t<div class=\"comment-box\">\n\t\t\t<div class=\"row\">\n\t\t\t\t<span class=\"text-gray\">{{ comment.user.profile.nick_name }}</span>\n\t\t\t\t<span class=\"pull-right\">\n\t\t\t\t\t<span class=\"text-gray\">{{ comment.n_likes }}</span>\n\t\t\t\t<a class=\"icon icon-like\" href=\"#\" @click.prevent=\"like(comment, $event)\"></a>\n\t\t\t\t<span>&nbsp;</span>\n\t\t\t\t<span class=\"text-gray\">{{ comment.n_replies }}</span>\n\t\t\t\t<a class=\"icon icon-comment-cnt\" href=\"#\" @click.prevent=\"reply1(cindex)\"></a>\n\t\t\t\t</span>\n\t\t\t</div>\n\t\t\t<div class=\"comment-content\"><a class=\"link-default\" href=\"#\" @click.prevent=\"reply1(cindex)\">{{ comment.content }}</a></div>\n\t\t\t<div class=\"comment-date\">{{ parseDate(comment.pub_date) }}</div>\n\t\t\t<ul class=\"comment-reply-list\">\n\t\t\t\t<li v-for=\"(rindex, reply) in comment.replys\">\n\t\t\t\t\t<div class=\"text-gray\"><i>{{ reply.user.profile.nick_name }}</i> 回复 <i>{{ reply.reply_comment.user.profile.nick_name }}</i>:</div>\n\t\t\t\t\t<div class=\"reply-content\"><a class=\"link-default\" href=\"#\" @click.prevent=\"reply2(cindex, rindex)\">{{ reply.content }}</a></div>\n\t\t\t\t\t<div class=\"comment-date\">{{ parseDate(reply.pub_date) }}</div>\n\t\t\t\t</li>\n\t\t\t</ul>\n\t\t</div>\n\t</li>\n\t<li v-if=\"!comments.length\">暂无评论～～</li>\n</ul>\n";
 
 /***/ },
 /* 62 */
@@ -5715,6 +5738,17 @@
 				type: 'GET',
 				beforeSend: function beforeSend(request) {
 					request.setRequestHeader("Authorization", 'Token ' + $.cookie('auth'));
+				}
+			});
+		},
+		regist: function regist(body) {
+			return $.ajax({
+				dataType: 'json',
+				url: window._server_url + 'register/',
+				type: 'POST',
+				data: body,
+				beforeSend: function beforeSend(request) {
+					request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 				}
 			});
 		}

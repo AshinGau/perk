@@ -2,7 +2,7 @@
 	<div id="PerkApp">
 		<div id="PerkBody">
 			<!--路由视图-->
-			<router-view keep-alive></router-view>
+			<router-view></router-view>
 		</div>
 		<!--底部菜单-->
 		<div id="PerkMenu">

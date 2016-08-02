@@ -13,7 +13,7 @@
 					<a class="icon icon-like" href="#" @click.prevent="like(comment, $event)"></a>
 					<span>&nbsp;</span>
 					<span class="text-gray">{{ comment.n_replies }}</span>
-					<span class="icon icon-comment-cnt"></span>
+					<a class="icon icon-comment-cnt" href="#" @click.prevent="reply1(cindex)"></a>
 					</span>
 				</div>
 				<div class="comment-content"><a class="link-default" href="#" @click.prevent="reply1(cindex)">{{ comment.content }}</a></div>
